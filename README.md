@@ -61,7 +61,7 @@ The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also
 ## Application Details
 Coming (finally) to the point about what the applications do:
 
-####Continuous vs. Single Conversion Modes
+#### Continuous vs. Single Conversion Modes
 The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs run in one-shot mode, and are triggered directly by the Raspberry Pi. If there is a preference for higher speed continuous sampling, the command line application, **jtlog** is able to sample all devices continuously at their maximum rates. The maximum rate changes with bit-resolution: whereas 18-bit data can only be captured at 3.75Hz, 12-bit data can be captured at 240Hz. Users are encouraged to use the command line application in this case. It will also create log files, much like the curses-based application does. If scheduled high speed logging is required, the linux's cron daemon can be configured to launch the application at the required moment.
 
 ### jtlogc
