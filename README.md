@@ -3,11 +3,11 @@
 High-precision measurement and logging of temperature:
 
 * __jtlog__ - command-line, intended for higher-speed logging.
-* __jtlogc__ - menu driven (curses), intended low-speed synchronized sampling, and monitoring.
+* __jtlogc__ - menu driven (curses), intended for low-speed synchronized sampling, and monitoring.
 
 # Synopsis
 
-Originally developed for monitoring process temperature in a small pysical plant, several wired temperature sensors are connected to a Raspberry Pi, which can, in turn, connect to a network and be used to monitor the plant. Logging temperature allows traceability of the process, so it can be verified as having run as designed. Both applications run on a Raspberry Pi in a bash shell, either directly on the pi, or through an ssh session.
+Originally developed for monitoring process temperature in small pysical plants, several wired temperature sensors are connected to a Raspberry Pi, which can, in turn, connect to a network and be used to monitor the plant. Logging temperature allows traceability of the process, so it can be verified as having run as designed. Both applications run on a Raspberry Pi in a bash shell, either directly on the pi, or through an ssh session.
 
 # Contents
 * [Description](#description)
@@ -31,10 +31,10 @@ Before discussing features & benefits of the software, a few words about hardwar
 
 ## Hardware Requirements
 
-It's a little unusual to start with a _hardware_ requirements in a document providing information about a software application, but there's little point in digging into the minutia of the software if the user doesn't understand the system requirements first, and at least possess the required hardware. To that end, there are two required pieces of hardware:
+It's a little unusual to start with _hardware_ requirements in a document providing information about a software application, but there's little point in digging into the minutia of the software if the user doesn't understand the system requirements first, and at least possess the required hardware. To that end, two things are needed:
 
 1. Raspberry Pi - can be any version with the J8 header, as connections to this header are required, and the software has very modest processing requirements.
-2. TI2C - temerature sensing module (developed by, and available from, [J-Tech Engineering, Ltd.](http://jtecheng.com). The sensor uses a Pt-RTD element to sense temperature, coupled through an amplifier and a Microchip MCP3421 18-bit Sigma-Delta ADC. The device uses an I2C interface to communicate with a host. I2C addresses are 8-bits wide, and devices are available with addresses ranging from 0x68-0x6b. An additional four addresses are mentioned in Microchip's datasheet, but these do not appear to be available for purchase as of this writing. A final note about the sensing element: The sensors can be ordered with either surface-mounted sensing elements, or through-hole elements on wires. The SMD version is compact and convenient as compared with the wired sensor, however the wired unit is more accurate as it does not experience any self-heating from the TI2C PCB itself.
+2. TI2C(s) - temperature sensing module(s) (developed by, and available from, [J-Tech Engineering, Ltd.](http://jtecheng.com) The sensor uses a Pt-RTD element to sense temperature, coupled through an amplifier and a Microchip MCP3421 18-bit Sigma-Delta ADC. The device uses an I2C interface to communicate with a host. I2C addresses are 8-bits wide, and devices are available with addresses ranging from 0x68-0x6b. An additional four addresses are mentioned in Microchip's datasheet, but these do not appear to be available for purchase as of this writing; the software does support them. A final note about the sensing element: The sensors can be ordered with either surface-mounted sensing elements, or through-hole elements on wires. The SMD version is compact and convenient as compared with the wired sensor version, however the wired unit is more accurate as it does not experience any self-heating from the TI2C PCB itself.
 
 ### Physical Connections
 
@@ -54,7 +54,7 @@ TI2C modules can be daisy-chained together; for example:
 	Rapberry Pi J8 pin 5 ---- TI2C #1 pin 3 ---- TI2C #2 pin 3 ---- TI2C #3 pin 3 ---- TI2C #4 pin 3
 	Rapberry Pi J8 pin 6 ---- TI2C #1 pin 4 ---- TI2C #2 pin 4 ---- TI2C #3 pin 4 ---- TI2C #4 pin 4
 
-The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also has a square solder pad on the PCB for easy identification. Connectors are ***not keyed***, and only minimally protected from static discharge, so care should be taken making connections. Power requirements are very light for these devices, so nearly any wire can be used; four-wire satin telephone wire (AWG28) was used during development. Please visit [Raspberry Pi - Python V3 MCP3421 Support](http://jtecheng.com/?p=1004) for information about connecting to the Raspberry Pi.
+The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also has a square solder pad on the PCB for easy identification. Connectors are ***not keyed***, and only minimally protected from static discharge, so care should be taken making connections. Power requirements are very light for these devices, so nearly any wire can be used; four-wire satin telephone wire (AWG28) was used during development. Please visit [Raspberry Pi - Python V3 MCP3421 Support](http://jtecheng.com/?p=1004) for additional information about connecting to the Raspberry Pi.
 
 **Note:** There is no reason the sensor can't be connected directly to _any_ device supporting the I2C standard, though this will doubtless lead to further software development.
 
@@ -65,25 +65,26 @@ Coming (finally) to the point about what the applications do:
 The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs run in one-shot mode, and are triggered directly by the Raspberry Pi. If there is a preference for higher speed continuous sampling, the command line application, **jtlog** is able to sample all devices continuously at their maximum rates. The maximum rate changes with bit-resolution: whereas 18-bit data can only be captured at 3.75Hz, 12-bit data can be captured at 240Hz. Users are encouraged to use the command line application in this case. It will also create log files, much like the curses-based application does. If scheduled high speed logging is required, the linux's cron daemon can be configured to launch the application at the required moment.
 
 ### jtlogc
+==========
 
 The application will open with self-explanatory information in various locations on the screen.
 
 #### Sensor Configuration
 The first step is to configure the sensors connected using the sensor menu. This menu allows setting the following:
--I2C address of the device
--Operating mode(0-3): These modes correspond to 12, 14, 16, and 18 bit resolution, with the caveat the higher resolution results in slower sampling. Resolution and bit-rate are displayed on the menu underneath the mode setting.
--Units: The sensor can return temperature in different unit sizes: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the TI2C python module.
--slope & intercept: PtRTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Note the values used for m and b are displayed above the status window at the bottom of the screen. The values shown initially are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, and that all resistors have 0% tolerance. This is obviously never true, and the slope/intercept numbers can be used to calibrate all sensor output.
--The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the 'n' and 'p' keys can be used to switch between sensors.
--The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address. This creates a lot more I2C traffic, and it may be neccessary to increase the sample period to give the display windows sufficient time to refresh.
+- address: The I2C address of the device. The list is preconfigured, so this is very much a multiple-choice field; choose a blank field to mark the sensor unused.
+- Operating mode(0-3): These modes correspond to 12, 14, 16, and 18 bit resolution, with the caveat the higher resolution results in slower sampling. Resolution and bit-rate are displayed on the menu underneath the mode setting.
+- Units: The sensor can return temperature in different unit sizes: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
+- slope & intercept: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Note the values used for m and b are displayed above the status window at the bottom of the screen. The values shown initially are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, and that all resistors have 0% tolerance. This is obviously never true, and the slope/intercept numbers can be used to calibrate all sensor output.
+
+The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the **n** and **p** keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address. This creates a lot more I2C traffic, and it may be neccessary to increase the sample period to give the display windows sufficient time to refresh.
 
 #### Logging Configuration
-**jtlogc** places data in a log file using standard **csv** format, and can be imported into any spreadsheet for further analysis. Start time, stop time, sample period, raw converter data, and converted temperature in the requested units (°C/°F/K) are all included in the log.
+**jtlogc** places data in a log file using standard **csv** format, which can be imported into any spreadsheet for further analysis. Start time, stop time, sample period, raw converter data, and converted temperature in the requested units (°C/°F/K) are all included in the log.
 
 The second step is to configure how log files are to be generated:
 - **start time**: the previously entered start time will be pre-loaded into the field entry window. Note that if a time in the past is entered into this field, it will not be possible to trigger sampling in the future. When a future time is entered, the stop time will be filled with the start time, as it is not possible to stop before one starts sampling.
 - **stop time**: if a start time has not been already entered, the stop time will be the previously entered value. If a time before the programmed start time is entered, but still in the future, the start time will be adjusted to match the stop time.
-- sample period: This is entered in seconds, and can be a decimal. In practice, sample times lower than 0.5 seconds, i.e. Fs > 2Hz, will cause the logger to not display data properly; however, data will still be written to the log file. If maximum possible sample rates are required, please use the command line executable, jtlog.py. It runs all ADCs in continuous mode, creates logs, and can handle unusual configurations such as different bit resolutions/speeds for different sensors. The sample period is displayed in the lower right corner of the window, above the log file.
+- **sample period**: This is entered in seconds, and can be a decimal. In practice, sample times lower than 0.5 seconds, i.e. Fs > 2Hz, will cause the logger to not display data properly; however, data will still be written to the log file. If maximum possible sample rates are required, please use the command line executable, jtlog.py. It runs all ADCs in continuous mode, creates logs, and can handle unusual configurations such as different bit resolutions/speeds for different sensors. The sample period is displayed in the lower right corner of the window, above the log file.
 - **log file prefix**: This is the name of the log file. The prefix will be used as the first part of the file name, and will have the time: yyyymmddhhmmss.csv appended to the prefix. The time used for the file name is the start time of sampling. If sampling is stopped and restarted, the log file currently being written will be closed, and a new file will be started when sampling recommences.
 - **log file location**: Specify the path to the log files. Shortcuts can be used such as ~, or ~/logs, but fully specified paths work too. Please ensure the path supports writing by the current user. **jtlogc** is not graceful on this point. The chosen log location will be displayed in the lower right corner above the status window. The date and time will be completed when logging commences; note that the filename is not live; it does not update when logging is underway.
 
@@ -93,13 +94,14 @@ The second step is to configure how log files are to be generated:
 
 #### Help
 All help actions simply provide instructions in the status window:
-- **user manual**: there are man pages for both the cli and curses versions; 'man jtlog' or 'man jtlogc' should bring up the appropriate page.
-check for updates: this will work only if running a local X session on the Raspberry Pi. If using a remote window, the program does not check, wait a minute, this could work, but only if you create a github repository.
+- **user manual**: there are man pages for both the cli and curses versions; _man jtlog_ or _man jtlogc_ should bring up the appropriate page.
+check for updates: this will work only if running a local X session on the Raspberry Pi. If using a remote window, the program does not check.
 - **check for updates**: directs user to J-Tech's [github repository](https://github.com/JTechEng)
 - **web**: directs user to J-Tech's [web](http://jtecheng.com) page.
 - **about j-tech**: directs user to our [about](http://jtecheng.com?page_id=74) page
 
 ### jtlog
+=========
 
 This is a command-line version, and comes with both a man page, and a help screen. Run 'jtlog -h' or 'jtlog --help' for simple instructions on how to use the application. The help screen is as follows:
 
