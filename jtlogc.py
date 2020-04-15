@@ -1546,9 +1546,9 @@ def main(stdscr):
                     statwin.message('type \'man jtlogc\' in your favourite shell.')
                     statwin.message('See README.md for further background information as well.')
                 elif selection == 1:    # updates
-                    webbrowser.open('https://github.com/JTechEng',new=2,autoraise=True)
+                    webbrowser.open('https://github.com/JTechEng/jtlog',new=2,autoraise=True)
                     statwin.message('Updates:')
-                    statwin.message('see https://github.com/JTechEng for the latest release of this application.')
+                    statwin.message('see https://github.com/JTechEng/jtlog for the latest release of this application.')
                 elif selection == 2:    # about
                     statwin.message('About us:')
                     statwin.message('J-Tech Engineering, Ltd. - 11080 Bond Blvd - Delta BC - V4E 1M7')
@@ -1556,7 +1556,7 @@ def main(stdscr):
                     statwin.message('see http://jtecheng.com/?page_id=74 for our bio.')
                 elif selection == 3:    # url... doesn't work through ssh :-(
                     webbrowser.open('http://jtecheng.com',new=2,autoraise=True)
-                    statwin.message('see http://jtecheng.com for the latest updates on sensors, software, and what\'s happening at our house')
+                    statwin.message('see http://jtecheng.com for the latest updates on sensors, software, and what\'s happening at our house.')
             else:
                 statwin.message('operation cancelled.')
 
