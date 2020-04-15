@@ -180,7 +180,7 @@ In order to communicate with the sensors, the SMBus protocol is used. This proto
 This pair of applications is intended to capture temperature from a sensor, or several sensors, connected to a Raspberry Pi. The first application is the larger one, and uses a menu-driven curses-based application. It can be configured and monitored remotely through a secure shell. The second application is a command-line equivalent. It's a little simpler to work with, and is able to sample at much higher speeds than the menu-driven version; also (just a suggestion), the cron daemon can be used to schedule the cli app.
 
 
-7. Credits
-==========
+# Credits
+
 [Lawrence Johnson](mailto:lawrence@jtecheng.com)
 [J-Tech Engineering, Ltd.](http://jtecheng.com)
