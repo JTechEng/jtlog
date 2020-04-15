@@ -172,7 +172,7 @@ Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 sample
 
 # Installation
 
-Pull the files from the repository, and from the project directory, run './install' as root, or run 'sudo ./install'. You may have first to change file permissions to make install executable: 'chmod 755 install'.
+Pull the files from the repository, and from the project directory, run _./install_ as root, or run _sudo ./install_. You may have first to change file permissions to make install executable: _chmod 755 install_.
 
 If your Raspberry Pi is not configured to enable the SMBus, you will need to make a few small changes to the operating environment. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](http://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
 
