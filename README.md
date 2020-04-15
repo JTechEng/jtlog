@@ -1,9 +1,9 @@
-# jtlogc and jtlog
+# jtlog and jtlogc
 
 High-precision measurement and logging of temperature:
 
-	* __jtlogc__ - menu driven (curses), intended low-speed synchronized sampling, and monitoring.
-	* __jtlog__ - command-line, intended for higher-speed logging.
+* __jtlog__ - command-line, intended for higher-speed logging.
+* __jtlogc__ - menu driven (curses), intended low-speed synchronized sampling, and monitoring.
 
 # Synopsis
 
@@ -146,7 +146,7 @@ This is a command-line version, and comes with both a man page, and a help scree
 If using the cli version, jtlog, there are options to discard either the converted temperatures, or the raw data, but the default is to include both.
 
 #### Examples
-        jtlog.py -s4 -s4 -s4 -s4 -ftemplog
+       jtlog.py -s4 -s4 -s4 -s4 -ftemplog
 Configure sensors at addresses 0x68, 0x69, 0x6a, and 0x6b on the I2C bus to sample at 18-bit resolution, 3.75 samples/sec, for one year, and write all log data to _~/jtlogs/templog\_nnnn.csv_ where _\_nnnn_ will increment each time the program is run.
 
        jtlog.py -s4 -s0 -s0 -s4 -d300
@@ -167,7 +167,6 @@ Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 sample
 Pull the files from the repository, and from the project directory, run ./install as root, or run sudo ./install. You may have first to change file permissions to make install executable: chmod 755 install.
 
 If your Raspberry Pi is not configured to enable the SMBus, you will need to make a few small changes to the operating environment. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](http://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
-
 
 # Issues
 
