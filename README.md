@@ -89,7 +89,7 @@ The second step is to configure how log files are to be generated. Press _l_ or 
 
 #### Actions
 The only major actions available concern starting, stopping, or triggering sampling. Press _a_ or _A_ to pull-down the _action_ menu:
-- **start/stop**: Immediate start/stop of sampling. If you just want data right away, and don't need a schedule, select this.
+- **start/stop**: Immediate start/stop of sampling. If data is needed on demand, without a schedule, select this.
 - **await start**: Uses the programmed start time, as set in the logging configuration menu. If the current time is between the start and stop times, and this item is selected, logging will commence immediately and stop at the specified stop time. Note that the local, start, and stop times are all displayed in the lower left corner of the window, right above the status window.
 
 #### Help
@@ -172,9 +172,9 @@ Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 sample
 
 # Installation
 
-Pull the files from the repository, and from the project directory, run _./install_ as root, or run _sudo ./install_. You may have first to change file permissions to make install executable: _chmod 755 install_.
+Pull the files from the repository, and from the project directory, run _./install_ as root, or run _sudo ./install_. Changing file permissions to make install executable _may_ be required: _chmod 755 install_.
 
-If your Raspberry Pi is not configured to enable the SMBus, you will need to make a few small changes to the operating environment. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](http://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
+If the Raspberry Pi is not configured to enable the SMBus, a few small changes to the operating environment will be required. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](http://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
 
 # Issues
 
