@@ -11,9 +11,13 @@ Originally developed for monitoring process temperature in a small pysical plant
 
 # Contents
 * [Description](#description)
+  * [Hardware Requirements](#hwreq)
+  * [Application Details](#appdetails)
+    * [jtlogc](#jtlogc)
+	* [jtlog](#jtlog)
+      * [Examples](#examples)
 * [Requirements](#requirements)
 * [Installation](#installation)
-* [Examples](#examples)
 * [Credits](#credits)
   
 # Description
@@ -52,8 +56,7 @@ The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also
 ## Application Details
 Coming (finally) to the point about what the applications do:
 
-Continuous vs. Single Conversion Modes
---------------------------------------
+####Continuous vs. Single Conversion Modes
 The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs run in one-shot mode, and are triggered directly by the Raspberry Pi. If there is a preference for higher speed continuous sampling, the command line application, **jtlog** is able to sample all devices continuously at their maximum rates. The maximum rate changes with bit-resolution: whereas 18-bit data can only be captured at 3.75Hz, 12-bit data can be captured at 240Hz. Users are encouraged to use the command line application in this case. It will also create log files, much like the curses-based application does. If scheduled high speed logging is required, the linux's cron daemon can be configured to launch the application at the required moment.
 
 ### jtlogc
@@ -83,14 +86,13 @@ The second step is to configure how log files are to be generated:
 - **start/stop**: Immediate start/stop of sampling. If you just want data right away, and don't need a schedule, select this.
 - **await start**: Uses the programmed start time, as set in the logging configuration menu. If the current time is between the start and stop times, and this item is selected, logging will commence immediately and stop at the specified stop time. Note that the local, start, and stop times are all displayed in the lower left corner of the window, right above the status window.
 
-### Help
+#### Help
 All help actions simply provide instructions in the status window:
 - **user manual**: there are man pages for both the cli and curses versions; 'man jtlog' or 'man jtlogc' should bring up the appropriate page.
 check for updates: this will work only if running a local X session on the Raspberry Pi. If using a remote window, the program does not check, wait a minute, this could work, but only if you create a github repository.
 - **check for updates**: directs user to J-Tech's [github repository](https://github.com/JTechEng)
 - **web**: directs user to J-Tech's [web](http://jtecheng.com) page.
 - **about j-tech**: directs user to our [about](http://jtecheng.com?page_id=74) page
-
 
 ### jtlog
 
@@ -165,7 +167,7 @@ Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 sample
 
 # Installation
 
-Pull the files from the repository, and from the project directory, run ./install as root, or run sudo ./install. You may have first to change file permissions to make install executable: chmod 755 install.
+Pull the files from the repository, and from the project directory, run './install' as root, or run 'sudo ./install'. You may have first to change file permissions to make install executable: 'chmod 755 install'.
 
 If your Raspberry Pi is not configured to enable the SMBus, you will need to make a few small changes to the operating environment. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](http://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
 
