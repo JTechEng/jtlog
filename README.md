@@ -155,7 +155,7 @@ Configure sensors at addresses 0x68, and 0x6b on the I2C bus to sample at 18-bit
 
        jtlog.py -s4 -s1 -d3600 -ftemplog
 Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 samples/sec, and the sensor at 0x69 to sample at 12-bit resolution, 240 samples/sec for one hour, and write all log data to _~/jtlogs/templog\_nnnn.csv_ where _\_nnnn_ will increment each time the program is run.
-
+_a
 # Requirements
 
 - **jtlogc.py** and **jtlog.py** the curses, and command line apps, respectively.
@@ -171,13 +171,13 @@ If your Raspberry Pi is not configured to enable the SMBus, you will need to mak
 
 # Issues
 
+## Clock
+
+**jtlogc** keeps a real-time-clock in the lower left corner, above the status window. This clock does not update consistently entering data into any of the subwindows, or when a pull-down menu is open. The clock does keep the time correctly, but fails to update consistently.
 
 ## SMBus vs I2C
 
 In order to communicate with the sensors, the SMBus protocol is used. This protocol was _not_ designed for this purpose, and does have at least one quirk: when sending commands to a device, a command byte will always be included in the data packet. This can be confusing when attempting to simply read conversion results from the ADCs, as they do not expect this byte. The MCP3421 datasheet does specify that a 0 transmitted in this byte position will be ignored by the device; therefore the issue can be ignored.
-
-
-This pair of applications is intended to capture temperature from a sensor, or several sensors, connected to a Raspberry Pi. The first application is the larger one, and uses a menu-driven curses-based application. It can be configured and monitored remotely through a secure shell. The second application is a command-line equivalent. It's a little simpler to work with, and is able to sample at much higher speeds than the menu-driven version; also (just a suggestion), the cron daemon can be used to schedule the cli app.
 
 
 # Credits
