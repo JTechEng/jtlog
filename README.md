@@ -14,10 +14,15 @@ Originally developed for monitoring process temperature in a small pysical plant
   * [Hardware Requirements](#hwreq)
   * [Application Details](#appdetails)
     * [jtlogc](#jtlogc)
+      * [Sensor Configuration](#sensorcfg)
+      * [Logging Configuration](#loggingcfg)
+      * [Actions](#actions)
+      * [Help](#help)
 	* [jtlog](#jtlog)
       * [Examples](#examples)
 * [Requirements](#requirements)
 * [Installation](#installation)
+* [Issues](#issues)
 * [Credits](#credits)
   
 # Description
