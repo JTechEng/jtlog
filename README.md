@@ -148,14 +148,14 @@ If using the cli version, jtlog, there are options to discard either the convert
 
 #### Examples
        jtlog.py -s4 -s4 -s4 -s4 -ftemplog
-Configure sensors at addresses 0x68, 0x69, 0x6a, and 0x6b on the I2C bus to sample at 18-bit resolution, 3.75 samples/sec, for one year, and write all log data to _~/jtlogs/templog\_nnnn.csv_ where _\_nnnn_ will increment each time the program is run.
+Configure sensors at addresses 0x68, 0x69, 0x6a, and 0x6b on the I2C bus to sample at 18-bit resolution, 3.75 samples/sec, for one year, and write all log data to *~/jtlogs/templog_nnnn.csv* where *_nnnn* will increment each time the program is run.
 
        jtlog.py -s4 -s0 -s0 -s4 -d300
-Configure sensors at addresses 0x68, and 0x6b on the I2C bus to sample at 18-bit resolution, 3.75 samples/sec, for five minutes, and write all log data to _~/jtlogs/jtlog\_nnnn.csv_ where _\_nnnn_ will increment each time the program is run.
+Configure sensors at addresses 0x68, and 0x6b on the I2C bus to sample at 18-bit resolution, 3.75 samples/sec, for five minutes, and write all log data to *~/jtlogs/jtlog_nnnn.csv* where *_nnnn* will increment each time the program is run.
 
        jtlog.py -s4 -s1 -d3600 -ftemplog
-Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 samples/sec, and the sensor at 0x69 to sample at 12-bit resolution, 240 samples/sec for one hour, and write all log data to _~/jtlogs/templog\_nnnn.csv_ where _\_nnnn_ will increment each time the program is run.
-_a
+Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 samples/sec, and the sensor at 0x69 to sample at 12-bit resolution, 240 samples/sec for one hour, and write all log data to *~/jtlogs/templog_nnnn.csv* where *_nnnn* will increment each time the program is run.
+
 # Requirements
 
 - **jtlogc.py** and **jtlog.py** the curses, and command line apps, respectively.
