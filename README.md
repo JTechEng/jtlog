@@ -180,7 +180,7 @@ If your Raspberry Pi is not configured to enable the SMBus, you will need to mak
 
 ## Clock
 
-**jtlogc** keeps a real-time-clock in the lower left corner, above the status window. This clock does not update consistently entering data into any of the subwindows, or when a pull-down menu is open. The clock does keep the time correctly, but fails to update consistently.
+**jtlogc** keeps a real-time-clock in the lower left corner, above the status window. This clock does not update consistently when entering data into any of the subwindows, or when a pull-down menu is open. The clock does keep the time correctly, but fails to update consistently.
 
 ## SMBus vs I2C
 
