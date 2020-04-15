@@ -1553,6 +1553,7 @@ def main(stdscr):
                     statwin.message('About us:')
                     statwin.message('J-Tech Engineering, Ltd. - 11080 Bond Blvd - Delta BC - V4E 1M7')
                     statwin.message('Lawrence Johnson - lawrence@jtecheng.com - 604 802 7579 - @JTechEng')
+                    statwin.message('see http://jtecheng.com/?page_id=74 for the latest release of this application.')
                 elif selection == 3:    # url... doesn't work through ssh :-(
                     webbrowser.open('http://jtecheng.com',new=2,autoraise=True)
                     statwin.message('see http://jtecheng.com for the latest updates on sensors, software, and what\'s happening at our house')
