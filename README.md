@@ -62,7 +62,7 @@ The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also
 Coming (finally) to the point about what the applications do:
 
 #### Continuous vs. Single Conversion Modes
-The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs run in one-shot mode, and are triggered directly by the Raspberry Pi. If there is a preference for higher speed continuous sampling, the command line application, **jtlog** is able to sample all devices continuously at their maximum rates. The maximum rate changes with bit-resolution: whereas 18-bit data can only be captured at 3.75Hz, 12-bit data can be captured at 240Hz. Users are encouraged to use the command line application in this case. It will also create log files, much like the curses-based application does. If scheduled high speed logging is required, the linux's cron daemon can be configured to launch the application at the required moment.
+The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs run in one-shot mode, and are triggered directly by the Raspberry Pi. If there is a preference for higher speed continuous sampling, the command line application, **jtlog**, is able to sample all devices continuously at their native rates. The native rate changes with bit-resolution: whereas 18-bit data can be captured at 3.75Hz, 12-bit data can be captured at 240Hz. Users are encouraged to use the command line application in this case. It will also create log files, much like the curses-based application does. If scheduled high speed logging is required, linux's cron daemon can be configured to launch the application at the required moment.
 
 ### jtlogc
 ----------
@@ -75,7 +75,7 @@ The first step is to configure the sensors connected using the sensor menu. Pres
 - Units: The sensor can return temperature in different unit sizes: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
 - slope & intercept: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Note the values used for m and b are displayed above the status window at the bottom of the screen. The values shown initially are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, and that all resistors have 0% tolerance. This is obviously never true, so the slope/intercept numbers are used to calibrate sensor output.
 
-The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the **n** and **p** keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address, and configure each for the units of interest. This creates a lot more I2C traffic though, and it may be neccessary to increase the sample period to give the display windows sufficient time to refresh.
+The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address, and configure each for the units of interest. This creates a lot more I2C traffic though, and it may be neccessary to increase the sample period to give the display windows sufficient time to refresh.
 
 #### Logging Configuration
 **jtlogc** places data in a log file using standard **csv** format, which can be imported into any spreadsheet for further analysis. Start time, stop time, sample period, raw converter data, and converted temperature in the requested units (°C/°F/K) are all included in the log.
@@ -96,7 +96,7 @@ The only major actions available concern starting, stopping, or triggering sampl
 All help actions simply provide instructions in the status window. Press _h_ or _H_ to pull down the _help_ menu:
 - **user manual**: there are man pages for both the cli and curses versions; _man jtlog_ or _man jtlogc_ should bring up the appropriate page.
 - **check for updates**: directs user to J-Tech's [github repository](https://github.com/JTechEng)
-- **web**: directs user to J-Tech's [web](http://jtecheng.com) pager; this will launch a browser only if running a local X session on the Raspberry Pi. If using a remote window, the program does not launch a browser session.
+- **web**: directs user to J-Tech's [web](http://jtecheng.com) page; this will launch a browser only if running a local X session on the Raspberry Pi. If using a remote window, the program does not launch a browser session.
 - **about j-tech**: directs user to our [about](http://jtecheng.com?page_id=74) page
 
 ### jtlog
