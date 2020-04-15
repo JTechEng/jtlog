@@ -9,13 +9,15 @@ High-precision measurement and logging of temperature:
 
 Originally developed for monitoring process temperature in a small pysical plant, several wired temperature sensors are connected to a Raspberry Pi, which can, in turn, connect to a network and be used to monitor the plant. Logging temperature allows traceability of the process, so it can be verified as having run as designed. Both applications run on a Raspberry Pi in a bash shell, either directly on the pi, or through an ssh session.
 
-1. Description
-2. Requirements
-3. Installation
-4. Usage
-5. Credits
+# Contents
+[Description](#description)
+[Requirements](#requirements)
+[Installation](#installation)
+[Usage](#usage)
+[Examples](#examples)
+[Credits](#usage)
   
-# Description
+# Description(#description)
 
 Before discussing features & benefits of the software, a few words about hardware:
 
@@ -155,20 +157,20 @@ Configure sensors at addresses 0x68, and 0x6b on the I2C bus to sample at 18-bit
        jtlog.py -s4 -s1 -d3600 -ftemplog
 Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 samples/sec, and the sensor at 0x69 to sample at 12-bit resolution, 240 samples/sec for one hour, and write all log data to _~/jtlogs/templog\_nnnn.csv_ where _\_nnnn_ will increment each time the program is run.
 
-# Requirements
+# Requirements(#requirements)
 
 - **jtlogc.py** and **jtlog.py** the curses, and command line apps, respectively.
 - **ti2c.py** - the sensor configuration module; does all the talking & listening to the hardware. Note this is used by _both_ **jtlog** and **jtlogc**.
 - **Python 3.5.9** or later - if using a different version, please upgrade python 3 before making support requests.
 - **Python 3 modules** - sys, os, time, curses, curses.textpad, json, threading, queue, webbrowser. Python will complain if any of these are missing, but all should be included in the standard installation through raspian.
 
-# Installation
+# Installation(#installation)
 
 Pull the files from the repository, and from the project directory, run ./install as root, or run sudo ./install. You may have first to change file permissions to make install executable: chmod 755 install.
 
 If your Raspberry Pi is not configured to enable the SMBus, you will need to make a few small changes to the operating environment. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](http://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
 
-# Issues
+# Issues(#issues)
 
 
 ## SMBus vs I2C
@@ -179,7 +181,8 @@ In order to communicate with the sensors, the SMBus protocol is used. This proto
 This pair of applications is intended to capture temperature from a sensor, or several sensors, connected to a Raspberry Pi. The first application is the larger one, and uses a menu-driven curses-based application. It can be configured and monitored remotely through a secure shell. The second application is a command-line equivalent. It's a little simpler to work with, and is able to sample at much higher speeds than the menu-driven version; also (just a suggestion), the cron daemon can be used to schedule the cli app.
 
 
-# Credits
+# Credits(#credits
 
 [Lawrence Johnson](mailto:lawrence@jtecheng.com)
+
 [J-Tech Engineering, Ltd.](http://jtecheng.com)
