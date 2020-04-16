@@ -2,12 +2,12 @@
 
 High-precision measurement and logging of temperature:
 
-* __jtlog__ - command-line, intended for higher-speed logging.
-* __jtlogc__ - menu driven (curses), intended for low-speed synchronized sampling, and monitoring.
+* __jtlogc__ - menu driven (curses), intended for low-speed synchronized sampling/monitoring/logging.
+* __jtlog__ - command-line app, intended for higher-speed sampling/monitoring/logging.
 
 # Synopsis
 
-Originally developed for monitoring process temperature in small pysical plants, several wired temperature sensors are connected to a Raspberry Pi, which can, in turn, connect to a network and be used to monitor the plant. Logging temperature allows traceability of the process, so it can be verified as having run as designed. Both applications run on a Raspberry Pi in a bash shell, either directly on the pi, or through an ssh session.
+Originally developed for monitoring process temperature in small physical plants, several wired temperature sensors are connected to a Raspberry Pi, which can, in turn, connect to a network and be used to monitor the plant. Logging temperature allows traceability of the process, so it can be verified as having run as designed. Both applications run on a Raspberry Pi in a bash shell, either directly on the pi, or through an ssh session.
 
 # Contents
 * [Description](#description)
@@ -34,7 +34,9 @@ Before discussing features & benefits of the software, a few words about hardwar
 It's a little unusual to start with _hardware_ requirements in a document providing information about a software application, but there's little point in digging into the minutia of the software if the user doesn't understand the system requirements first, and at least possess the required hardware. To that end, two things are needed:
 
 1. Raspberry Pi - can be any version with the J8 header, as connections to this header are required, and the software has very modest processing requirements.
-2. TI2C(s) - temperature sensing module(s) (developed by, and available from, [J-Tech Engineering, Ltd.](http://jtecheng.com)). The sensor uses a Pt-RTD element to sense temperature, coupled through an amplifier and a Microchip MCP3421 18-bit Sigma-Delta ADC. The device uses an I2C interface to communicate with a host. I2C addresses are 8-bits wide, and devices are available with addresses ranging from 0x68-0x6b. An additional four addresses are mentioned in Microchip's datasheet, but these do not appear to be available for purchase as of this writing; the software does support them. A final note about the sensing element: The sensors can be ordered with either surface-mounted sensing elements, or through-hole elements on wires. The SMD version is compact and convenient as compared with the wired sensor version, however the wired unit is more accurate as it does not experience any self-heating from the TI2C PCB itself.
+2. TI2C(s) - temperature sensing module(s) (developed by, and available from, [J-Tech Engineering, Ltd.](https://jtecheng.com)). The sensor uses a Pt-RTD element to sense temperature, coupled through an amplifier and a Microchip MCP3421 18-bit Sigma-Delta ADC. The device uses an I2C interface to communicate with a host. I2C addresses are 8-bits wide, and devices are available with addresses ranging from 0x68-0x6b. An additional four addresses are mentioned in Microchip's datasheet, but these do not appear to be available for purchase as of this writing; however, the software does support them.
+
+**SMD vs. TH Elements**: Sensors can be ordered with either a surface-mounted sensing element, or a through-hole element on wires. The SMD version is compact and convenient as compared to the wired sensor version, however the wired unit is more accurate as it is subject to less self-heating from the TI2C PCB itself; also, whereas the surface-mounted sensor's range is limited to the -40°C to +125°C range of the components on the PCB, the sensing element itself has a range of -50°C to +500°C. As impressive as that sounds, 500°C will melt solder, so running the sensors up to this temperature is not recommended. See the sensor [product description](https://jtecheng.com/?page_id=1054) for further details.
 
 ### Physical Connections
 
@@ -54,7 +56,7 @@ TI2C modules can be daisy-chained together; for example:
 	Rapberry Pi J8 pin 5 ---- TI2C #1 pin 3 ---- TI2C #2 pin 3 ---- TI2C #3 pin 3 ---- TI2C #4 pin 3
 	Rapberry Pi J8 pin 6 ---- TI2C #1 pin 4 ---- TI2C #2 pin 4 ---- TI2C #3 pin 4 ---- TI2C #4 pin 4
 
-The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also has a square solder pad on the PCB for easy identification. Connectors are ***not keyed***, and only minimally protected from static discharge, so care should be taken making connections. Power requirements are very light for these devices, so nearly any wire can be used; four-wire satin telephone wire (AWG28) was used during development. Please visit [Raspberry Pi - Python V3 MCP3421 Support](http://jtecheng.com/?p=1004) for additional information about connecting to the Raspberry Pi.
+The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also has a square solder pad on the PCB for easy identification. Connectors are ***not keyed***, and only minimally protected from static discharge, so care should be taken making connections. Power requirements are very light for these devices, so nearly any wire can be used; four-wire satin telephone wire (AWG28) was used during development. Please visit [Raspberry Pi - Python V3 MCP3421 Support](https://jtecheng.com/?p=1004) for additional information about connecting to the Raspberry Pi.
 
 **Note:** There is no reason the sensor can't be connected directly to _any_ device supporting the I2C standard, though this will doubtless lead to further software development.
 
@@ -75,7 +77,7 @@ The first step is to configure the sensors connected using the sensor menu. Pres
 - Units: The sensor can return temperature in different unit sizes: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
 - slope & intercept: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Note the values used for m and b are displayed above the status window at the bottom of the screen. The values shown initially are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, and that all resistors have 0% tolerance. This is obviously never true, so the slope/intercept numbers are used to calibrate sensor output.
 
-The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address, and configure each for the units of interest. This creates a lot more I2C traffic though, and it may be neccessary to increase the sample period to give the display windows sufficient time to refresh.
+The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address, and configure each for the units of interest. This creates a lot more I2C traffic though, and it may be necessary to increase the sample period to give the display windows sufficient time to refresh.
 
 #### Logging Configuration
 **jtlogc** places data in a log file using standard **csv** format, which can be imported into any spreadsheet for further analysis. Start time, stop time, sample period, raw converter data, and converted temperature in the requested units (°C/°F/K) are all included in the log.
@@ -96,8 +98,8 @@ The only major actions available concern starting, stopping, or triggering sampl
 All help actions simply provide instructions in the status window. Press _h_ or _H_ to pull down the _help_ menu:
 - **user manual**: there are man pages for both the cli and curses versions; _man jtlog_ or _man jtlogc_ should bring up the appropriate page.
 - **check for updates**: directs user to J-Tech's [github repository](https://github.com/JTechEng)
-- **web**: directs user to J-Tech's [web](http://jtecheng.com) page; this will launch a browser only if running a local X session on the Raspberry Pi. If using a remote window, the program does not launch a browser session.
-- **about j-tech**: directs user to our [about](http://jtecheng.com?page_id=74) page
+- **web**: directs user to J-Tech's [web](https://jtecheng.com) page; this will launch a browser only if running a local X session on the Raspberry Pi. If using a remote window, the program does not launch a browser session.
+- **about j-tech**: directs user to our [about](https://jtecheng.com?page_id=74) page
 
 ### jtlog
 ---------
@@ -174,7 +176,7 @@ Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 sample
 
 Pull the files from the repository, and from the project directory, run _./install_ as root, or run _sudo ./install_. Changing file permissions to make _install_ executable _may_ be required: _chmod 755 install_.
 
-If the Raspberry Pi is not configured to enable the SMBus, a few small changes to the operating environment will be required. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](http://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
+If the Raspberry Pi is not configured to enable the SMBus, a few small changes to the operating environment will be required. See the man pages and/or [Raspberry Pi - Python V3 I2C Support](https://www.jtecheng.com/?p=959). Please be aware that at the time of creating the web page, modifications to the SMBus module were required for use in Python 3; this is no longer the case, and is noted on the page, but enabling the kernel modules and verifying TI2C devices are visible is still necessary.
 
 # Issues
 
@@ -186,9 +188,8 @@ If the Raspberry Pi is not configured to enable the SMBus, a few small changes t
 
 In order to communicate with the sensors, the SMBus protocol is used. This protocol was _not_ designed for this purpose, and does have at least one quirk: when sending commands to a device, a command byte will always be included in the data packet. This can be confusing when attempting to simply read conversion results from the ADCs, as they do not expect this byte. The MCP3421 datasheet does specify that a 0 transmitted in this byte position will be ignored by the device; therefore the issue can be ignored.
 
-
 # Credits
 
 [Lawrence Johnson](mailto:lawrence@jtecheng.com)
 
-[J-Tech Engineering, Ltd.](http://jtecheng.com)
+[J-Tech Engineering, Ltd.](https://jtecheng.com)
