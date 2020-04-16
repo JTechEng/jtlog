@@ -65,6 +65,7 @@ Coming (finally) to the point about what the applications do:
 
 #### Continuous vs. Single Conversion Modes
 The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs run in one-shot mode, and are triggered directly by the Raspberry Pi. If there is a preference for higher speed continuous sampling, the command line application, **jtlog**, is able to sample all devices continuously at their native rates. The native rate changes with bit-resolution: whereas 18-bit data can be captured at 3.75Hz, 12-bit data can be captured at 240Hz. Users are encouraged to use the command line application in this case. It will also create log files, much like the curses-based application does. If scheduled high speed logging is required, linux's cron daemon can be configured to launch the application at the required moment.
+
 ----------
 ### jtlogc
 
@@ -100,6 +101,7 @@ All help actions simply provide instructions in the status window. Press _h_ or 
 - **check for updates**: directs user to J-Tech's [github repository](https://github.com/JTechEng)
 - **web**: directs user to J-Tech's [web](https://jtecheng.com) page; this will launch a browser only if running a local X session on the Raspberry Pi. If using a remote window, the program does not launch a browser session.
 - **about j-tech**: directs user to our [about](https://jtecheng.com?page_id=74) page
+
 ---------
 ### jtlog
 
