@@ -35,7 +35,7 @@
 #    CHnn | 0x6f *
 #
 # * not available, though listed in product datasheet.
-#   product datasheet: ds22003e - http://microchip.com
+#   product datasheet: ds22003e - https://microchip.com
 #
 # __doc__
 """ti2c python module; defines class tempsensor."""
