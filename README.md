@@ -11,11 +11,11 @@ Originally developed for monitoring process temperature in small physical plants
 
 # Contents
 * [Description](#description)
-  * [Hardware Requirements](#hwreq)
-  * [Application Details](#appdetails)
+  * [Hardware Requirements](#hardware-requirements)
+  * [Application Details](#applications)
     * [jtlogc](#jtlogc)
-      * [Sensor Configuration](#sensorcfg)
-      * [Logging Configuration](#loggingcfg)
+      * [Sensor Configuration](#sensor-configuration)
+      * [Logging Configuration](#logging-configuration)
       * [Actions](#actions)
       * [Help](#help)
 	* [jtlog](#jtlog)
