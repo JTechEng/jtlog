@@ -34,7 +34,7 @@ Before discussing features & benefits of the software, a few words about hardwar
 It's a little unusual to start with _hardware_ requirements in a document providing information about a software application, but there's little point in digging into the minutia of the software if the user doesn't understand the system requirements first, and at least possess the required hardware. To that end, two things are needed:
 
 1. Raspberry Pi - can be any version with the J8 header, as connections to this header are required, and the software has very modest processing requirements.
-2. TI2C(s) - temperature sensing module(s) (developed by, and available from, [J-Tech Engineering, Ltd.](https://jtecheng.com)). The sensor uses a Pt-RTD element to sense temperature, coupled through an amplifier and a Microchip MCP3421 18-bit Sigma-Delta ADC. The device uses an I2C interface to communicate with a host. I2C addresses are 8-bits wide, and devices are available with addresses ranging from 0x68-0x6b. An additional four addresses are mentioned in Microchip's datasheet, but these do not appear to be available for purchase as of this writing; however, the software does support them.
+2. TI2C(s) - temperature sensing module(s) (developed by, and available from, [J-Tech Engineering, Ltd.](https://jtecheng.com)). The sensor uses a Pt-RTD element to sense temperature, coupled through an amplifier and a Microchip MCP3421 18-bit Sigma-Delta ADC. The device uses an I<sup>2</sup>C interface to communicate with a host. I<sup>2</sup>C addresses are 8-bits wide, and devices are available with addresses ranging from 0x68-0x6b. An additional four addresses are mentioned in Microchip's datasheet, but these do not appear to be available for purchase as of this writing; however, the software does support them.
 
 **SMD vs. TH Elements**: Sensors can be ordered with either a surface-mounted sensing element, or a through-hole element on wires. The SMD version is compact and convenient compared to the wired sensor version, however the wired unit is more accurate as it is subject less to self-heating from the TI2C PCB; also, whereas the surface-mounted sensor's range is limited to the -40°C to +125°C range of the components on the PCB, the sensing element itself has a range of -50°C to +500°C. As impressive as that sounds, 500°C will melt solder, so running the sensors up to this temperature is not recommended. See the sensor [product description](https://jtecheng.com/?page_id=1054) for further details.
 
@@ -58,7 +58,7 @@ TI2C modules can be daisy-chained together; for example:
 
 The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also has a square solder pad on the PCB for easy identification. Connectors are ***not keyed***, and only minimally protected from static discharge, so care should be taken making connections. Power requirements are very light for these devices, so nearly any wire can be used; four-wire satin telephone wire (AWG28) was used during development. Please visit [Raspberry Pi - Python V3 MCP3421 Support](https://jtecheng.com/?p=1004) for additional information about connecting to the Raspberry Pi.
 
-**Note:** There is no reason the sensor can't be connected directly to _any_ device supporting the I2C standard, though this will doubtless lead to further software development.
+**Note:** There is no reason the sensor can't be connected directly to _any_ device supporting the I<sup>2</sup>C standard, though this will doubtless lead to further software development.
 
 ## Applications
 The biggest difference, aside from their user interfaces, between the two applications is in the way they operate the ADCs.
@@ -72,15 +72,15 @@ The MCP3421 can either sample continuously or in single-conversion mode. Samplin
 The application will launch with self-explanatory information in various locations on the screen.
 
 #### Sensor Configuration
-The first step is to configure the sensors connected using the sensor menu. _Sensor_ is a bit ambiguous in this context. Configuring a sensor means configuring the sensor _object_ in the software, not the TI2C module. TI2C modules are associated with the sensor objects being configured via their I2C addresses.
+The first step is to configure the sensors connected using the sensor menu. _Sensor_ is a bit ambiguous in this context. Configuring a sensor means configuring the sensor _object_ in the software, not the TI2C module. TI2C modules are associated with the sensor objects being configured via their I<sup>2</sup>C addresses.
 
 Press _s_ or _S_ to pull down the **sensor** menu. Select a sensor with the arrow keys, and press _enter_ to bring up the configuration screen; this allows setting the following:
-* **address**: The I2C address of the device. The list is pre-defined, so this is very much a multiple-choice field; choose the blank entry to mark the sensor unused.
+* **address**: The I<sup>2</sup>C address of the device. The list is pre-defined, so this is very much a multiple-choice field; choose the blank entry to mark the sensor unused.
 * **operating mode(0-3)**: These modes correspond to 12, 14, 16, and 18 bit resolution, with the caveat the higher resolution results in slower sampling. Resolution and bit-rate are displayed on the menu underneath the mode setting.
 * **units**: The sensor can return temperature in different units: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
 * **slope & intercept**: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = _m_x + _b_. Values used for _m_ and _b_ are displayed in information summaries for each configured sensor. The default values are determined by simple calculation of gain stages through the TI2C module, and are based on the assumptions that there are no offset or gain errors in the amplifier stage, all resistors have 0% tolerance, and the ADC converts perfectly with no errors or noise; these assumptions are rarely if ever true, so the slope/intercept numbers are used to calibrate sensor output.
 
-The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between them. The same TI2C module can be associated with more than one sensor. If it's desirable to have one module read in °C, °F, and K all at once, configure three sensors to use the same I2C address, and configure each for different units; this creates a lot more I2C traffic though, and it may be necessary to increase the sample period to give the display windows sufficient time to refresh.
+The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between them. The same TI2C module can be associated with more than one sensor. If it's desirable to have one module read in °C, °F, and K all at once, configure three sensors to use the same I<sup>2</sup>C address, and configure each for different units; this creates a lot more I<sup>2</sup>C traffic though, and it may be necessary to increase the sample period to give the display windows sufficient time to refresh.
 
 #### Logging Configuration
 **jtlogc** places data in a log file using standard **csv** format, which can be imported into any spreadsheet for further analysis. Start time, stop time, sample period, raw converter data, and converted temperature in the requested units (°C/°F/K) are all included in the log.
@@ -127,14 +127,14 @@ This is a command-line version, and comes with both a man page, and a help scree
                     4 - 18-bit samples, sample rate 3.75 Hz
 
             max. # of sensors: 8:
-                    sensor 0 I2C addr: 0x68
-                    sensor 1 I2C addr: 0x69
-                    sensor 2 I2C addr: 0x6a
-                    sensor 3 I2C addr: 0x6b
-                    sensor 4 I2C addr: 0x6c
-                    sensor 5 I2C addr: 0x6d
-                    sensor 6 I2C addr: 0x6e
-                    sensor 7 I2C addr: 0x6f
+                    sensor 0 I<sup>2</sup>C addr: 0x68
+                    sensor 1 I<sup>2</sup>C addr: 0x69
+                    sensor 2 I<sup>2</sup>C addr: 0x6a
+                    sensor 3 I<sup>2</sup>C addr: 0x6b
+                    sensor 4 I<sup>2</sup>C addr: 0x6c
+                    sensor 5 I<sup>2</sup>C addr: 0x6d
+                    sensor 6 I<sup>2</sup>C addr: 0x6e
+                    sensor 7 I<sup>2</sup>C addr: 0x6f
 
             Sensors must be specified in ascending order of address.
             If a sensor is absent, use a 0 as a place holder. There
@@ -161,10 +161,10 @@ If using the cli version, jtlog, there are options to discard either the convert
 
 #### Examples
        jtlog.py -s4 -s4 -s4 -s4 -ftemplog
-Configure sensors at addresses 0x68, 0x69, 0x6a, and 0x6b on the I2C bus to sample at 18-bit resolution, 3.75 samples/sec, for one year, and write all log data to *~/jtlogs/templog_nnnn.csv* where *_nnnn* will increment each time the program is run.
+Configure sensors at addresses 0x68, 0x69, 0x6a, and 0x6b on the I<sup>2</sup>C bus to sample at 18-bit resolution, 3.75 samples/sec, for one year, and write all log data to *~/jtlogs/templog_nnnn.csv* where *_nnnn* will increment each time the program is run.
 
        jtlog.py -s4 -s0 -s0 -s4 -d300
-Configure sensors at addresses 0x68, and 0x6b on the I2C bus to sample at 18-bit resolution, 3.75 samples/sec, for five minutes, and write all log data to *~/jtlogs/jtlog_nnnn.csv* where *_nnnn* will increment each time the program is run.
+Configure sensors at addresses 0x68, and 0x6b on the I<sup>2</sup>C bus to sample at 18-bit resolution, 3.75 samples/sec, for five minutes, and write all log data to *~/jtlogs/jtlog_nnnn.csv* where *_nnnn* will increment each time the program is run.
 
        jtlog.py -s4 -s1 -d3600 -ftemplog
 Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 samples/sec, and the sensor at 0x69 to sample at 12-bit resolution, 240 samples/sec for one hour, and write all log data to *~/jtlogs/templog_nnnn.csv* where *_nnnn* will increment each time the program is run.
@@ -188,7 +188,7 @@ If the Raspberry Pi is not configured to enable the SMBus, a few small changes t
 
 **jtlogc** keeps a real-time-clock in the lower left corner, above the status window. This clock does not update consistently when entering data into any of the subwindows, or when a pull-down menu is open. The clock does keep the time correctly, but fails to update consistently.
 
-## SMBus vs I2C
+## SMBus vs I<sup>2</sup>C
 
 In order to communicate with the sensors, the SMBus protocol is used. This protocol was _not_ designed for this purpose, and does have at least one quirk: when sending commands to a device, a command byte will always be included in the data packet. This can be confusing when attempting to simply read conversion results from the ADCs, as they do not expect this byte. The MCP3421 datasheet does specify that a 0 transmitted in this byte position will be ignored by the device; therefore the issue can be ignored.
 
