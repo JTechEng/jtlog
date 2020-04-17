@@ -190,10 +190,8 @@ If the Raspberry Pi is not configured to enable the SMBus, a few small changes t
 
 ## SMBus vs I<sup>2</sup>C
 
-In order to communicate with the sensors, the SMBus protocol is used. This protocol was _not_ designed for this purpose, and has at least one quirk: when querying a device, a command byte will always be included in the data packet. This can be confusing when attempting to simply read conversion results from the ADCs, as they do not expect this byte. The MCP3421 datasheet states that a _0_ transmitted in this byte position will be ignored by the device; all methods requesting sample data in the ti2c.py module send a _0_ in this position, therefore the issue can be safely ignored.
+In order to communicate with the sensors, the SMBus protocol is used. This protocol was _not_ designed for this purpose, and has at least one quirk: when querying a device, a command byte will always be included in the data packet. This can be confusing when attempting to simply read conversion results from the ADCs, as they do not expect this byte. The MCP3421 datasheet states that a _0_ transmitted in this byte position will be ignored by the device; all methods requesting sample data in the **ti2c.py** module send a _0_ in this position, therefore the issue can be safely ignored.
 
 # Credits
 
-[Lawrence Johnson](mailto:lawrence@jtecheng.com)
-
-[J-Tech Engineering, Ltd.](https://jtecheng.com)
+[Lawrence Johnson](mailto:lawrence@jtecheng.com), [J-Tech Engineering, Ltd.](https://jtecheng.com)
