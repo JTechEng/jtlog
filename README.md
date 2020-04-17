@@ -60,31 +60,33 @@ The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also
 
 **Note:** There is no reason the sensor can't be connected directly to _any_ device supporting the I2C standard, though this will doubtless lead to further software development.
 
-## Application Details
-Coming (finally) to the point about what the applications do:
+## Applications
+The biggest difference, aside from their user interfaces, between the two applications is in the way they operate the ADCs.
 
-#### Continuous vs. Single Conversion Modes
-The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs run in one-shot mode, and are triggered directly by the Raspberry Pi. If there is a preference for higher speed continuous sampling, the command line application, **jtlog**, is able to sample all devices continuously at their native rates. The native rate changes with bit-resolution: whereas 18-bit data can be captured at 3.75Hz, 12-bit data can be captured at 240Hz. Users are encouraged to use the command line application in this case. It will also create log files, much like the curses-based application does. If scheduled high speed logging is required, linux's cron daemon can be configured to launch the application at the required moment.
+#### Continuous vs. Single Conversion (one-shot) Modes
+The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs are configured to run in one-shot mode (see Microchip data-sheet for further details), and are triggered directly by the Raspberry Pi using a synchronized trigger. In other words, all sensors sample simultaneously. If there is a preference for higher speed continuous sampling, the command line application, **jtlog**, is able to sample all devices continuously at their native rates. The devices trigger from their internal clocks, and so are no longer synchronized. The native rate changes with bit-resolution: whereas 18-bit data can be captured at 3.75Hz, 12-bit data can be captured at 240Hz.
 
 ----------
 ### jtlogc
 
-The application will open with self-explanatory information in various locations on the screen.
+The application will launch with self-explanatory information in various locations on the screen.
 
 #### Sensor Configuration
-The first step is to configure the sensors connected using the sensor menu. Press _s_ or _S_, to pull down the _sensor_ menu. Select a sensor with the arrow keys, and press enter to bring up the configuration screen; this allows setting the following:
-* **address**: The I2C address of the device. The list is preconfigured, so this is very much a multiple-choice field; choose a blank field to mark the sensor unused.
-* **operating mode(0-3)**: These modes correspond to 12, 14, 16, and 18 bit resolution, with the caveat the higher resolution results in slower sampling. Resolution and bit-rate are displayed on the menu underneath the mode setting.
-* **units**: The sensor can return temperature in different unit sizes: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
-* **slope & intercept**: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Note the values used for m and b are displayed above the status window at the bottom of the screen. The values shown initially are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, and that all resistors have 0% tolerance. This is obviously never true, so the slope/intercept numbers are used to calibrate sensor output.
+The first step is to configure the sensors connected using the sensor menu. _Sensor_ is a bit ambiguous. Configuring a sensor means configuring the sensor _object_ in the software, not the TI2C module. TI2C modules are associated with the sensor objects being configured.
 
-The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address, and configure each for the units of interest. This creates a lot more I2C traffic though, and it may be necessary to increase the sample period to give the display windows sufficient time to refresh.
+Press _s_ or _S_, to pull down the _sensor_ menu. Select a sensor with the arrow keys, and press enter to bring up the configuration screen; this allows setting the following:
+* **address**: The I2C address of the device. The list is pre-defined, so this is very much a multiple-choice field; choose the blank entry to mark the sensor unused.
+* **operating mode(0-3)**: These modes correspond to 12, 14, 16, and 18 bit resolution, with the caveat the higher resolution results in slower sampling. Resolution and bit-rate are displayed on the menu underneath the mode setting.
+* **units**: The sensor can return temperature in different units: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
+* **slope & intercept**: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Values used for m and b are displayed in information summaries for each configured sensor. The default values are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, that all resistors have 0% tolerance, and that the ADC converts perfectly with no errors or noise. This is obviously never true, so the slope/intercept numbers are used to calibrate sensor output.
+
+The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, configure three sensors to use the same I2C address, and configure each for different units; this creates a lot more I2C traffic though, and it may be necessary to increase the sample period to give the display windows sufficient time to refresh.
 
 #### Logging Configuration
 **jtlogc** places data in a log file using standard **csv** format, which can be imported into any spreadsheet for further analysis. Start time, stop time, sample period, raw converter data, and converted temperature in the requested units (°C/°F/K) are all included in the log.
 
 The second step is to configure how log files are to be generated. Press _l_ or _L_ to pull down the _logging_ menu:
-* **start time**: the previously entered start time will be pre-loaded into the field entry window. Note that if a time in the past is entered into this field, it will not be possible to trigger sampling in the future. When a future time is entered, the stop time will be filled with the start time, as it is not possible to stop before one starts sampling.
+* **start time**: the previously entered start time will be loaded into the field entry window. Note that if a time in the past is entered into this field, it will not be possible to trigger sampling in the future. When a future time is entered, the stop time will be filled with the start time, as it is not possible to stop before one starts sampling.
 * **stop time**: if a start time has not been already entered, the stop time will be the previously entered value. If a time before the programmed start time is entered, but still in the future, the start time will be adjusted to match the stop time.
 * **sample period**: This is entered in seconds, and can be a decimal. In practice, sample times lower than 0.5 seconds, i.e. Fs > 2Hz, will cause the logger to not display data properly; however, data will still be written to the log file. If maximum possible sample rates are required, please use the command line executable, jtlog.py. It runs all ADCs in continuous mode, creates logs, and can handle unusual configurations such as different bit resolutions/speeds for different sensors. The sample period is displayed in the lower right corner of the window, above the log file.
 * **log file prefix**: This is the name of the log file. The prefix will be used as the first part of the file name, and will have the time: _yyyymmddhhmmss.csv_ appended to the prefix. The time used for the file name is the start time of sampling. If sampling is stopped and restarted, the log file currently being written will be closed, and a new file will be started when sampling recommences.
