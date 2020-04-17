@@ -174,7 +174,7 @@ Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 sample
 * **jtlogc.py** and **jtlog.py** the curses, and command line apps, respectively.
 * **ti2c.py** - the sensor configuration module; does all the talking & listening to the hardware. Note this is used by _both_ **jtlog** and **jtlogc**.
 * **Python 3.5.9** or later - if using a different version, please upgrade python 3 before making support requests.
-* **Python 3 modules** - sys, os, time, curses, curses.textpad, json, threading, queue, webbrowser. Python will complain if any of these are missing, but all should be included in the standard installation through raspian.
+* **Python 3 modules** - sys, os, time, curses, curses.textpad, json, threading, queue, webbrowser. Python will complain if any of these are missing, but all should be included in the standard installation through raspbian.
 
 # Installation
 

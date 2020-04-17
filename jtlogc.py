@@ -475,7 +475,7 @@ class sensorglobaltrigger(object):
                 tnext += self.triggertime
                 with threading.Lock():
                     self.sensors.trigger()
-                    self.qfileio.put(time.time())  # in a raspian system, returns a float with fractional seconds.
+                    self.qfileio.put(time.time())  # in a raspbian system, returns a float with fractional seconds.
                 #self.statwin.message('thread: {} triggered.'.format(threading.current_thread().name))
             while(tnext - time.perf_counter() > 0.25 or msg != 'r'):
                 if not self.qmsg.empty():
