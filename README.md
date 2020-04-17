@@ -1,4 +1,4 @@
-# jtlog and jtlogc
+# jtlogc and jtlog
 
 High-precision measurement and logging of temperature:
 
