@@ -145,7 +145,7 @@ This is a command-line version, and comes with both a man page, and a help scree
             Include only raw ADC data in hex format in output to stdout & file.
 
     -c,--cook
-            Include cooked (converted) data in °C in output to stdout or file.
+            Include only cooked data in °C in output to stdout or file.
 
     -d<duration>,--duration=<duration>
             duration of data collection in seconds; 0 means collect for one year.

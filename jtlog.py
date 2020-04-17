@@ -87,7 +87,7 @@ def showhelp():
             '\tis no need to pad remaining addresses with 0s after the\n',
             '\tlast sensor parameter.\n',sep='')
     print('-r,--raw\n\tInclude only raw ADC data in hex format in output to stdout & file.\n')
-    print('-c,--cook\n\tInclude cooked (converted) data in °C in output to stdout or file.\n')
+    print('-c,--cook\n\tInclude only cooked data in °C in output to stdout or file.\n')
     print('-d<duration>,--duration=<duration>\n\tduration of data collection in seconds; 0 means collect for one year.\n')
     print('-f<filename>,--logfile=<filename>\n\tPrefix of file name to which collected data will be written; csv')
     print('\tformat. All file output will be written to ~/jtlogs. If no filename\n',

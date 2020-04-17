@@ -1,6 +1,5 @@
 #!/bin/bash
-# an install script for the jtlog and jtlogc programs;
-# run this as root or it will not work.
+# install script for the jtlog and jtlogc programs; run with root privileges.
 
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo installing applications in /usr/local/bin...
