@@ -61,7 +61,7 @@ The header on the TI2C is 1x4 0.100" (2.54mm) pitch. Pin 1 is labelled, and also
 **Note:** There is no reason the sensor can't be connected directly to _any_ device supporting the I<sup>2</sup>C standard, though this will doubtless lead to further software development.
 
 ## Applications
-The biggest difference, aside from their user interfaces, between the two applications is in the way they operate the ADCs.
+The big difference between the two applications, aside from their user interfaces, is in the way they operate the ADCs.
 
 #### Continuous vs. Single Conversion (one-shot) Modes
 The MCP3421 can either sample continuously or in single-conversion mode. Sampling temperature at high-speed is an unusual requirement, so in the case of **jtlogc**, ADCs are configured to run in one-shot mode (see Microchip data-sheet for further details), and are triggered directly by the Raspberry Pi using a synchronized trigger. In other words, all sensors sample simultaneously. If there is a preference for higher speed continuous sampling, the command line application, **jtlog**, is able to sample all devices continuously at their native rates. The devices trigger from their internal clocks, and so are no longer synchronized. The native rate changes with bit-resolution: whereas 18-bit data can be captured at 3.75Hz, 12-bit data can be captured at 240Hz.
@@ -72,7 +72,7 @@ The MCP3421 can either sample continuously or in single-conversion mode. Samplin
 The application will launch with self-explanatory information in various locations on the screen.
 
 #### Sensor Configuration
-The first step is to configure the sensors connected using the sensor menu. _Sensor_ is a bit ambiguous in this context. Configuring a sensor means configuring the sensor _object_ in the software, not the TI2C module. TI2C modules are associated with the sensor objects being configured via their I<sup>2</sup>C addresses.
+The first step is to configure the sensors using the sensor menu. _Sensor_ is a bit ambiguous in this context. Configuring a sensor means configuring a sensor _object_ in software, not configuring the TI2C module. TI2C modules are associated with sensor objects being configured via their I<sup>2</sup>C addresses. Any sensor object can associate with any TI2C module, provided it's physically present and connected.
 
 Press _s_ or _S_ to pull down the **sensor** menu. Select a sensor with the arrow keys, and press _enter_ to bring up the configuration screen; this allows setting the following:
 * **address**: The I<sup>2</sup>C address of the device. The list is pre-defined, so this is very much a multiple-choice field; choose the blank entry to mark a sensor unused.
