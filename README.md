@@ -73,10 +73,10 @@ The application will open with self-explanatory information in various locations
 
 #### Sensor Configuration
 The first step is to configure the sensors connected using the sensor menu. Press _s_ or _S_, to pull down the _sensor_ menu. Select a sensor with the arrow keys, and press enter to bring up the configuration screen; this allows setting the following:
-- address: The I2C address of the device. The list is preconfigured, so this is very much a multiple-choice field; choose a blank field to mark the sensor unused.
-- Operating mode(0-3): These modes correspond to 12, 14, 16, and 18 bit resolution, with the caveat the higher resolution results in slower sampling. Resolution and bit-rate are displayed on the menu underneath the mode setting.
-- Units: The sensor can return temperature in different unit sizes: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
-- slope & intercept: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Note the values used for m and b are displayed above the status window at the bottom of the screen. The values shown initially are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, and that all resistors have 0% tolerance. This is obviously never true, so the slope/intercept numbers are used to calibrate sensor output.
+* address: The I2C address of the device. The list is preconfigured, so this is very much a multiple-choice field; choose a blank field to mark the sensor unused.
+* Operating mode(0-3): These modes correspond to 12, 14, 16, and 18 bit resolution, with the caveat the higher resolution results in slower sampling. Resolution and bit-rate are displayed on the menu underneath the mode setting.
+* Units: The sensor can return temperature in different unit sizes: Celsius, Fahrenheit, and Kelvin. The raw sample data from the sensor is always the same; the arithmetic used to convert between units is handled in the ti2c python module.
+* slope & intercept: Pt-RTD sensors are extremely linear, so raw ADC data is converted with a simple linear equation: y = mx + b. Note the values used for m and b are displayed above the status window at the bottom of the screen. The values shown initially are determined by simple calculation of gain stages through the TI2C module, and are based on the assumption that there are no offset or gain errors in the amplifier stage, and that all resistors have 0% tolerance. This is obviously never true, so the slope/intercept numbers are used to calibrate sensor output.
 
 The sensor configuration menu allows direct selection of up to eight different sensors, and once in the sensor configuration screen, the _n_ and _p_ keys can be used to switch between sensors. The same sensor can be addressed more than once in the list. If it's desirable to have one read in °C, °F, and K all at once, set three sensors to the same I2C address, and configure each for the units of interest. This creates a lot more I2C traffic though, and it may be necessary to increase the sample period to give the display windows sufficient time to refresh.
 
@@ -84,23 +84,23 @@ The sensor configuration menu allows direct selection of up to eight different s
 **jtlogc** places data in a log file using standard **csv** format, which can be imported into any spreadsheet for further analysis. Start time, stop time, sample period, raw converter data, and converted temperature in the requested units (°C/°F/K) are all included in the log.
 
 The second step is to configure how log files are to be generated. Press _l_ or _L_ to pull down the _logging_ menu:
-- **start time**: the previously entered start time will be pre-loaded into the field entry window. Note that if a time in the past is entered into this field, it will not be possible to trigger sampling in the future. When a future time is entered, the stop time will be filled with the start time, as it is not possible to stop before one starts sampling.
-- **stop time**: if a start time has not been already entered, the stop time will be the previously entered value. If a time before the programmed start time is entered, but still in the future, the start time will be adjusted to match the stop time.
-- **sample period**: This is entered in seconds, and can be a decimal. In practice, sample times lower than 0.5 seconds, i.e. Fs > 2Hz, will cause the logger to not display data properly; however, data will still be written to the log file. If maximum possible sample rates are required, please use the command line executable, jtlog.py. It runs all ADCs in continuous mode, creates logs, and can handle unusual configurations such as different bit resolutions/speeds for different sensors. The sample period is displayed in the lower right corner of the window, above the log file.
-- **log file prefix**: This is the name of the log file. The prefix will be used as the first part of the file name, and will have the time: _yyyymmddhhmmss.csv_ appended to the prefix. The time used for the file name is the start time of sampling. If sampling is stopped and restarted, the log file currently being written will be closed, and a new file will be started when sampling recommences.
-- **log file location**: Specify the path to the log files. Shortcuts can be used such as _~_, or _~/logs_, but fully specified paths work too. Please ensure the path supports writing by the current user. **jtlogc** is not graceful on this point. The chosen log location will be displayed in the lower right corner above the status window. The date and time will be completed when logging commences; note that the filename is not live; it does not update when logging is underway.
+* **start time**: the previously entered start time will be pre-loaded into the field entry window. Note that if a time in the past is entered into this field, it will not be possible to trigger sampling in the future. When a future time is entered, the stop time will be filled with the start time, as it is not possible to stop before one starts sampling.
+* **stop time**: if a start time has not been already entered, the stop time will be the previously entered value. If a time before the programmed start time is entered, but still in the future, the start time will be adjusted to match the stop time.
+* **sample period**: This is entered in seconds, and can be a decimal. In practice, sample times lower than 0.5 seconds, i.e. Fs > 2Hz, will cause the logger to not display data properly; however, data will still be written to the log file. If maximum possible sample rates are required, please use the command line executable, jtlog.py. It runs all ADCs in continuous mode, creates logs, and can handle unusual configurations such as different bit resolutions/speeds for different sensors. The sample period is displayed in the lower right corner of the window, above the log file.
+* **log file prefix**: This is the name of the log file. The prefix will be used as the first part of the file name, and will have the time: _yyyymmddhhmmss.csv_ appended to the prefix. The time used for the file name is the start time of sampling. If sampling is stopped and restarted, the log file currently being written will be closed, and a new file will be started when sampling recommences.
+* **log file location**: Specify the path to the log files. Shortcuts can be used such as _~_, or _~/logs_, but fully specified paths work too. Please ensure the path supports writing by the current user. **jtlogc** is not graceful on this point. The chosen log location will be displayed in the lower right corner above the status window. The date and time will be completed when logging commences; note that the filename is not live; it does not update when logging is underway.
 
 #### Actions
 The only major actions available concern starting, stopping, or triggering sampling. Press _a_ or _A_ to pull-down the _action_ menu:
-- **start/stop**: Immediate start/stop of sampling. If data is needed on demand, without a schedule, select this.
-- **await start**: Uses the programmed start time, as set in the logging configuration menu. If the current time is between the start and stop times, and this item is selected, logging will commence immediately and stop at the specified stop time. Note that the local, start, and stop times are all displayed in the lower left corner of the window, right above the status window.
+* **start/stop**: Immediate start/stop of sampling. If data is needed on demand, without a schedule, select this.
+* **await start**: Uses the programmed start time, as set in the logging configuration menu. If the current time is between the start and stop times, and this item is selected, logging will commence immediately and stop at the specified stop time. Note that the local, start, and stop times are all displayed in the lower left corner of the window, right above the status window.
 
 #### Help
 All help actions simply provide instructions in the status window. Press _h_ or _H_ to pull down the _help_ menu:
-- **user manual**: there are man pages for both the cli and curses versions; _man jtlog_ or _man jtlogc_ should bring up the appropriate page.
-- **check for updates**: directs user to J-Tech's [github repository](https://github.com/JTechEng)
-- **web**: directs user to J-Tech's [web](https://jtecheng.com) page; this will launch a browser only if running a local X session on the Raspberry Pi. If using a remote window, the program does not launch a browser session.
-- **about j-tech**: directs user to our [about](https://jtecheng.com?page_id=74) page
+* **user manual**: there are man pages for both the cli and curses versions; _man jtlog_ or _man jtlogc_ should bring up the appropriate page.
+* **check for updates**: directs user to J-Tech's [github repository](https://github.com/JTechEng)
+* **web**: directs user to J-Tech's [web](https://jtecheng.com) page; this will launch a browser only if running a local X session on the Raspberry Pi. If using a remote window, the program does not launch a browser session.
+* **about j-tech**: directs user to our [about](https://jtecheng.com?page_id=74) page
 
 ---------
 ### jtlog
@@ -169,10 +169,10 @@ Configure the sensor at address 0x68 to sample at 18-bit resolution, 3.75 sample
 
 # Requirements
 
-- **jtlogc.py** and **jtlog.py** the curses, and command line apps, respectively.
-- **ti2c.py** - the sensor configuration module; does all the talking & listening to the hardware. Note this is used by _both_ **jtlog** and **jtlogc**.
-- **Python 3.5.9** or later - if using a different version, please upgrade python 3 before making support requests.
-- **Python 3 modules** - sys, os, time, curses, curses.textpad, json, threading, queue, webbrowser. Python will complain if any of these are missing, but all should be included in the standard installation through raspian.
+* **jtlogc.py** and **jtlog.py** the curses, and command line apps, respectively.
+* **ti2c.py** - the sensor configuration module; does all the talking & listening to the hardware. Note this is used by _both_ **jtlog** and **jtlogc**.
+* **Python 3.5.9** or later - if using a different version, please upgrade python 3 before making support requests.
+* **Python 3 modules** - sys, os, time, curses, curses.textpad, json, threading, queue, webbrowser. Python will complain if any of these are missing, but all should be included in the standard installation through raspian.
 
 # Installation
 
