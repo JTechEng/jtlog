@@ -157,7 +157,7 @@ This is a command-line version, and comes with both a man page, and a help scree
             nnnn is a unique number depending on what files already exist. If
             filename is specified, '_nnnn.csv' will be appended.
 
-If using the cli version, jtlog, there are options to discard either the converted temperatures, or the raw data, but the default is to include both.
+**jtlog** includes options to discard either the converted temperatures, or the raw data; the default is to include both.
 
 #### Examples
        jtlog.py -s4 -s4 -s4 -s4 -ftemplog
