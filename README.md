@@ -194,4 +194,5 @@ In order to communicate with the sensors, the SMBus protocol is used. This proto
 
 # Credits
 
-[Lawrence Johnson](mailto:lawrence@jtecheng.com), [J-Tech Engineering, Ltd.](https://jtecheng.com)
+[Lawrence Johnson](mailto:lawrence@jtecheng.com)<br>
+[J-Tech Engineering, Ltd.](https://jtecheng.com)
