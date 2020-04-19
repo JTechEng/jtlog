@@ -51,10 +51,10 @@ The Raspberry Pi requires a hard-wired connection to the TI2C modules. The conne
 
 TI2C modules can be daisy-chained together; for example:
 
-	Rapberry Pi J8 pin 1 ~~~~ TI2C #1 pin 1 ~~~~ TI2C #2 pin 1 ~~~~ TI2C #3 pin 1 ~~~~ TI2C #4 pin 1
-	Rapberry Pi J8 pin 3 ~~~~ TI2C #1 pin 2 ~~~~ TI2C #2 pin 2 ~~~~ TI2C #3 pin 2 ~~~~ TI2C #4 pin 2
-	Rapberry Pi J8 pin 5 ~~~~ TI2C #1 pin 3 ~~~~ TI2C #2 pin 3 ~~~~ TI2C #3 pin 3 ~~~~ TI2C #4 pin 3
-	Rapberry Pi J8 pin 6 ~~~~ TI2C #1 pin 4 ~~~~ TI2C #2 pin 4 ~~~~ TI2C #3 pin 4 ~~~~ TI2C #4 pin 4
+	Rapberry Pi J8 pin 1 ~----~ TI2C #1 pin 1 ~----~ TI2C #2 pin 1 ~----~ TI2C #3 pin 1 ~----~ TI2C #4 pin 1
+	Rapberry Pi J8 pin 3 ~----~ TI2C #1 pin 2 ~----~ TI2C #2 pin 2 ~----~ TI2C #3 pin 2 ~----~ TI2C #4 pin 2
+	Rapberry Pi J8 pin 5 ~----~ TI2C #1 pin 3 ~----~ TI2C #2 pin 3 ~----~ TI2C #3 pin 3 ~----~ TI2C #4 pin 3
+	Rapberry Pi J8 pin 6 ~----~ TI2C #1 pin 4 ~----~ TI2C #2 pin 4 ~----~ TI2C #3 pin 4 ~----~ TI2C #4 pin 4
 
 The header on the TI2C is 1x4, 0.100" (2.54mm) pitch. Pin 1 is labelled, and also has a square solder pad on the PCB for easy identification. Connectors are ***not keyed***, and only minimally protected from static discharge, so care should be taken making connections. Power requirements are very light for these devices, so nearly any wire can be used; four-wire satin telephone wire (AWG28) is more than adequate. Please visit [Raspberry Pi - Python V3 MCP3421 Support](https://jtecheng.com/?p=1004) for additional information about connecting to the Raspberry Pi.
 
