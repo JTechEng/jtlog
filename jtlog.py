@@ -2,7 +2,7 @@
 # jtlog.py - an application for collecting and displaying data from 
 #            sensors supplied by J-Tech Engineering, Ltd.
 # Copyright © 2020 - J-Tech Engineering, Ltd.
-#
+# licensing & permissions {{{
 # jtlog.py is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Now that that's out of the way...
+# }}}
+# grandiose description {{{
 # A logger for reading several ti2c temperature sensors, based on the 
 # Microchip MCP3421 18-bit Delta Sigma converter.
 # The ti2c.py module contains the definition for the tempsensor class. Import the module 
@@ -51,12 +52,16 @@
 # it's running slightly slower than it would appear. Possible solutions include
 # either adjusting the sleep time, or converting to an exception-based system in
 # which an expiring timer triggers a device read.
+# }}}
 
+# modules {{{
 import sys,os,getopt
 import termios
 import time
 from ti2c import tempsensor
+# }}}
 
+# globals {{{
 # number of samples to keep, and number to discard during settling period at start of logging:
 maxduration = 31557600 # one year; no real reason for this; seems like enough.
 duration = 0        # 0 means sample until you run out of storage space. 
@@ -70,7 +75,10 @@ logfile_ext = '.csv'
 # Specific variables to the ADC and amplifier stages on the sensor board:
 maxsensors = 8      # I2C addresses are available from Microchip.
 cfgmodes = 4        # config modes of adc
+# }}}
 
+# functions {{{1
+# showhelp {{{2
 # Explain how to use this program, then dump the user back to the command line:
 def showhelp():
     print(sys.argv[0],' -h -s <mode-sensor#1> [-r] [-c] [-s <mode-sensor#2> ... <mode-sensor#{}>] [-d <duration>] [-f filename]\n'.format(maxsensors))
@@ -94,7 +102,8 @@ def showhelp():
           '\tis specified, the default log file name is \'jtlog_nnnn.csv\', where\n',
           '\tnnnn is a unique number depending on what files already exist. If\n',
           '\tfilename is specified, \'_nnnn.csv\' will be appended.\n')
-
+#  }}}
+# gen_log_name {{{2
 # Create a unique log file name:
 def gen_log_name(filename):
     # determine if a log path exists:
@@ -109,7 +118,8 @@ def gen_log_name(filename):
         j += 1
         log = str(logdir + '/' + logfile + '_' + str('%04d' % j) + logfile_ext)
     return log
-
+# }}}
+# get_cfg {{{2
 def get_cfg(argv):
     '''Get configuration info from command line:'''
     try:
@@ -176,7 +186,8 @@ def get_cfg(argv):
         duration = maxduration
     samples = duration * max(sorted(modes))
     return sensor,duration,samples,log,raw,cooked
-
+# }}}
+# make_term_raw {{{2
 # Reconfigure the terminal to allow reception of characters:
 def make_term_raw(fd):
     orig_attr = termios.tcgetattr(fd)
@@ -187,21 +198,24 @@ def make_term_raw(fd):
     attr[6][termios.VTIME] = 0      # set time to wait for a character to 0; just return if none available.
     termios.tcsetattr(fd,termios.TCSADRAIN,attr)
     return orig_attr 
+# }}}
+# }}}
 
+# main {{{1
 def main(argv):
-
+    # introduction; get setup; test sensors {{{2
     print('J-Tech Engineering, Ltd. - Sigma Delta ADC Analyser & Logger\n')
 
     # determine what sensors are present, and what mode each will use:
     sensor,duration,samples,log,raw,cooked = get_cfg(argv)
     numsensors = len(sensor)
-    
-    # open a file for writing sample data
+    # }}}
+    # open a file for writing sample data {{{2
     datalog = open(log,"w")
     datalog.write('Filename: ' + log + '\n')
     datalog.write('Date: ' + time.asctime() + '\n')
-
-    # confirm setup to both screen & log file:
+    # }}}
+    # confirm setup to both screen & log file: {{{2
     print('set up:')
     print('sample duration is {} seconds.'.format(duration))
     print('log file name = {}.'.format(log))
@@ -212,15 +226,16 @@ def main(argv):
         datalog.write(sensor_config)
         print(sensor_config,sep='',end='')
     print('\npress q to quit.\n')
-    
+    # }}}
+    # determine highest conversion rate {{{2
     # Default device read rate will be the lowest resolution/highest conversion rate; 
     # sort through the list looking for the highest rate:
     sfreq = sensor[0].get_samplerate()
     for i in range(numsensors):
         if sfreq < sensor[i].get_samplerate():
             sfreq = sensor[i].get_samplerate()
-        
-    # Configure the relationship between sensor sample rates:
+    # }}}
+    # Configure the relationship between sensor sample rates: {{{2
     # If one sensor is running 12-bits / 240Hz, & another is 18-bits / 3.75Hz,
     # read the slower sensor once every 64 passes through
     # the sensor loop, but the faster one every time.
@@ -229,8 +244,8 @@ def main(argv):
     for i in range(numsensors):
         sdowncountini.append(sfreq / sensor[i].get_samplerate())
         sdowncount.append(1)            # force each to read initially.
-    
-    # print an address line as column headings:
+    # }}}
+    # print an address line as column headings: {{{2
     for i in range(numsensors):
         print('sensor #%d' %(i+1),' - i2c adr: %#04x' % sensor[i].get_address(),'      ',sep='',end='')
         datalog.write(hex(sensor[i].get_address()))
@@ -242,19 +257,19 @@ def main(argv):
         else:
             print('\n',end='')
             datalog.write(str('\n'))
-
-    # take the keyboard out of canonical mode, & define an exit command.
+    # }}}
+    # take the keyboard out of canonical mode, & define an exit command {{{2
     fd = sys.stdin.fileno()
     orig_attr = make_term_raw(fd)   # returns unmodified terminal attribute structure.
     exit_cmd = ('q','Q')
-
+    # }}}
+    # main try/except block {{{2
     # keyboard is now out of canonical mode, so use a try/except block to exit cleanly on kbint.
     try:
         # Discard the first few samples to allow settling; log the rest.
         totalsamples = samples + discard
-    
         scount = 0                  # Counter for logging samples
-    
+        # main execution loop {{{3 
         while scount < totalsamples:
             time.sleep(1/sfreq)             # sleep between reads.
     
@@ -307,11 +322,10 @@ def main(argv):
                 raise KeyboardInterrupt
 
             scount += 1
-
+        # }}}
         # log complete; exit through the keyboard exception
         # to restore input functionality & close log file.
         raise KeyboardInterrupt
-
     except (KeyboardInterrupt,OSError) as error:
         termios.tcsetattr(fd,termios.TCSADRAIN,orig_attr)   # restore canonical mode.
         if error == OSError:
@@ -319,6 +333,7 @@ def main(argv):
                 print('\nRemote I/O Error: it\'s likely an I2C device, probably one or more',
                       '\nti2c modules, has/have become unavailable. Verify connections & cables.')
         print('\nend.\n')
-
+    # }}}
+# }}}
 if(__name__ == '__main__'):
     main(sys.argv[1:])
