@@ -111,7 +111,7 @@ This is a command-line version, and comes with both a man page, and a help scree
 
     J-Tech Engineering, Ltd. - Sigma Delta ADC Analyser & Logger
 
-    jtlog  -h -s <mode-sensor#1> [-r] [-c] [-s <mode-sensor#2> ... <mode-sensor#8>] [-d <duration>] [-f filename]
+    jtlog  -h -s <mode-sensor#1> [-s <mode-sensor#2> ... <mode-sensor#8>] [-r] [-c] [-d <duration>] [-f filename]
 
     -h,--help
             display this message.
