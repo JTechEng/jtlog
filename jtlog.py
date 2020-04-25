@@ -81,7 +81,7 @@ cfgmodes = 4        # config modes of adc
 # showhelp {{{2
 # Explain how to use this program, then dump the user back to the command line:
 def showhelp():
-    print(sys.argv[0],' -h -s <mode-sensor#1> [-s <mode-sensor#2> ... <mode-sensor#{}>] [-r] [-c] [-d <duration>] [-f filename]\n'.format(maxsensors))
+    print(sys.argv[0],' -h -s <mode-sensor#1> [-s <mode-sensor#2> ... -s <mode-sensor#{}>] [-r] [-c] [-d <duration>] [-f filename]\n'.format(maxsensors))
     print('-h,--help\n\tdisplay this message.\n')
     print('-s<mode>,--sensor-mode=<mode>\n\twhere <mode> is 0-4; up to 8 -s<mode> pairs can be supplied;')
     print('\n\t<mode> is one of:\n\t\t0 - no sensor')
