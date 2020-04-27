@@ -42,7 +42,7 @@ It's a little unusual to start with _hardware_ requirements in a document provid
 
 The Raspberry Pi requires a hard-wired connection to the TI2C modules. The connections from the Raspberry Pi to the TI2C are as follows:
 
-   | Raspberry Pi(J8) | TI2C  | description |
+   | Raspberry Pi (J8) | TI2C  | Description |
    | ---------------: | :---: | :---------- |
    |                1 |   1   | 3.3V        |
    |                3 |   2   | SDA         |
