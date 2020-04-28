@@ -1,7 +1,7 @@
 #!/bin/bash
 # install script for the jtlog and jtlogc programs; run with root privileges.
 # Copyright © 2020 - J-Tech Engineering, Ltd.
-# licensing & permissions {{{
+# {{{ licensing & permissions 
 # install.sh is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
